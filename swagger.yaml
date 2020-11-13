@@ -1,0 +1,59 @@
+swagger: "2.0"
+host: "localhost:5000"
+info:
+  description: "This is an API to manage GitHubRepositories"
+  version: "1.0.0"
+  title: "Git Hub Repositories Managment"
+basePath: "/api"
+schemes:
+- "http"
+paths:
+  /github/{user}:
+    get:
+      summary: "Find repositories by user id"
+      description: "return a list of repositories base on user provided"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "user"
+        in: "path"
+        description: "ID of user"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Success"
+        "404":
+          description: "user not found"
+          schema:
+            $ref: "#/definitions/Error"
+        "406":
+          description: "Not accepted format"
+          schema:
+            $ref: "#/definitions/Error"
+definitions:
+  Branches:
+      type: "array"
+      items:
+          type: "string"
+      json:
+          Branch name: "string"
+          Last Commit: "string"
+  Success:
+      type: "array"
+      items:
+          type: "object"
+      data:
+          Repository Name: "integer"
+          message: "string"
+          Branches: "#/definitions/Branches"
+  Error:
+    type: "object"
+    properties:
+        status:
+            type: "integer"
+            format: "int64"
+        message:
+            type: "string"
